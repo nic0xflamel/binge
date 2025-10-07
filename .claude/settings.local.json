@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(yarn install)",
+      "Bash(find:*)",
+      "Bash(git rm:*)",
+      "Bash(yarn add:*)",
+      "Bash(yarn build:*)",
+      "Bash(yarn test)",
+      "Bash(yarn test:*)",
+      "Bash(yarn dev)",
+      "Bash(node:*)",
+      "mcp__playwright",
+      "mcp__grocerease-supabase",
+      "Bash(rm:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
