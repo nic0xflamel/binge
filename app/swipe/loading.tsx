@@ -2,15 +2,9 @@ import Skeleton from '@/components/ui/Skeleton';
 
 export default function SwipeLoading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 p-4">
-      {/* Header */}
-      <div className="max-w-2xl mx-auto mb-4 flex justify-between items-center">
-        <div className="h-5 w-32 bg-purple-400 rounded animate-pulse" />
-        <div className="h-5 w-16 bg-purple-400 rounded animate-pulse" />
-      </div>
-
+    <div className="min-h-screen p-4">
       {/* Card Skeleton */}
-      <div className="max-w-2xl mx-auto">
+      <div className="max-w-2xl mx-auto pt-8">
         <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
           {/* Poster Skeleton */}
           <Skeleton variant="rectangular" className="aspect-[2/3] w-full" />

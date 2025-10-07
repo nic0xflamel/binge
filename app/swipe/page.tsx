@@ -275,28 +275,28 @@ export default function SwipePage() {
         <div className="max-w-2xl mx-auto px-4 pt-8 py-6">
           <div className={`${components.card.solid} overflow-hidden animate-pulse`}>
             {/* Skeleton Poster */}
-            <div className="aspect-[2/3] bg-gradient-to-br from-gray-200 to-gray-300 rounded-t-3xl"></div>
+            <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 via-pink-100 to-sky-200 rounded-t-3xl"></div>
             {/* Skeleton Info */}
             <div className="p-6 space-y-4">
-              <div className="h-8 bg-gray-200 rounded-lg w-3/4"></div>
-              <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-8 bg-gradient-to-r from-sky-100 to-pink-100 rounded-lg w-3/4"></div>
+              <div className="h-4 bg-sky-100 rounded w-1/2"></div>
               <div className="flex gap-2">
-                <div className="h-6 bg-gray-200 rounded-full w-20"></div>
-                <div className="h-6 bg-gray-200 rounded-full w-20"></div>
-                <div className="h-6 bg-gray-200 rounded-full w-20"></div>
+                <div className="h-6 bg-sky-100 rounded-full w-20"></div>
+                <div className="h-6 bg-sky-100 rounded-full w-20"></div>
+                <div className="h-6 bg-pink-100 rounded-full w-20"></div>
               </div>
               <div className="space-y-2">
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                <div className="h-4 bg-sky-50 rounded w-full"></div>
+                <div className="h-4 bg-sky-50 rounded w-5/6"></div>
               </div>
               <div className="flex gap-3 pt-2">
-                <div className="flex-1 h-12 bg-gray-200 rounded-lg"></div>
-                <div className="flex-1 h-12 bg-gray-200 rounded-lg"></div>
-                <div className="flex-1 h-12 bg-gray-200 rounded-lg"></div>
+                <div className="flex-1 h-12 bg-gradient-to-r from-sky-100 to-pink-100 rounded-lg"></div>
+                <div className="flex-1 h-12 bg-gradient-to-r from-pink-100 to-sky-100 rounded-lg"></div>
+                <div className="flex-1 h-12 bg-sky-100 rounded-lg"></div>
               </div>
             </div>
           </div>
-          <div className="text-center mt-4 text-gray-600">Loading your feed...</div>
+          <div className="text-center mt-4 text-gray-800 font-medium">Loading your feed...</div>
         </div>
       </div>
     );
@@ -312,7 +312,7 @@ export default function SwipePage() {
             </svg>
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-3">All Caught Up!</h1>
-          <p className="text-gray-600 mb-8 leading-relaxed">
+          <p className="text-gray-800 mb-8 leading-relaxed">
             You've swiped through all available titles. Check back soon for more recommendations!
           </p>
           <button
@@ -409,7 +409,7 @@ export default function SwipePage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 {currentTitle.name}
               </h2>
-              <div className="flex items-center gap-3 text-sm font-medium text-gray-500 mb-5">
+              <div className="flex items-center gap-3 text-sm font-semibold text-gray-600 mb-5">
                 <span>{currentTitle.year}</span>
                 <span>•</span>
                 <span>{currentTitle.runtime_min} min</span>
@@ -421,7 +421,7 @@ export default function SwipePage() {
                   {currentTitle.genres.slice(0, 3).map(genre => (
                     <span
                       key={genre}
-                      className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-full text-sm font-medium"
+                      className="px-3 py-1.5 bg-sky-100 text-sky-800 rounded-full text-sm font-semibold border border-sky-200"
                     >
                       {genre}
                     </span>
@@ -435,7 +435,7 @@ export default function SwipePage() {
                   {currentTitle.vibes.slice(0, 3).map(vibe => (
                     <span
                       key={vibe}
-                      className={`${components.badge.secondary} border border-pink-200`}
+                      className="px-3 py-1.5 bg-pink-100 text-pink-800 rounded-full text-sm font-semibold border border-pink-200"
                     >
                       {vibe}
                     </span>
@@ -444,7 +444,7 @@ export default function SwipePage() {
               )}
 
               {/* Overview */}
-              <p className="text-gray-700 leading-relaxed mb-6 text-[15px]">
+              <p className="text-gray-800 leading-relaxed mb-6 text-[15px]">
                 {currentTitle.overview}
               </p>
 
@@ -478,6 +478,7 @@ export default function SwipePage() {
                   onClick={() => handleSwipe('yes')}
                   disabled={swiping || rateLimitCooldown}
                   className={`flex-1 ${components.button.primary} disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group hover:shadow-xl`}
+                  style={{ backgroundImage: 'linear-gradient(to right, #0284c7, #db2777)' }}
                   aria-label={`Like ${currentTitle.name}`}
                 >
                   <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">

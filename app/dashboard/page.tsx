@@ -55,14 +55,14 @@ export default async function DashboardPage() {
         <div className="grid md:grid-cols-2 gap-5 animate-fade-in">
           {/* Start Swiping Card */}
           <Link href="/swipe" className="group">
-            <div className={`${components.card.feature} hover:-translate-y-1`}>
-              <div className={`${components.icon.base} mb-4 group-hover:scale-110 transition-transform`}>
+            <div className="bg-gradient-to-br from-sky-100 to-sky-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all hover:-translate-y-1 border border-sky-200">
+              <div className="w-14 h-14 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                 </svg>
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2">Start Swiping</h2>
-              <p className="text-gray-600 text-sm leading-relaxed">
+              <p className="text-gray-700 text-sm leading-relaxed">
                 Discover your next favorite show or movie
               </p>
             </div>
@@ -70,15 +70,15 @@ export default async function DashboardPage() {
 
           {/* Matches Card */}
           <Link href="/matches" className="group">
-            <div className={`${components.card.feature} hover:-translate-y-1`}>
-              <div className={`${components.icon.base} mb-4 group-hover:scale-110 transition-transform`}>
+            <div className="bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all hover:-translate-y-1 border border-pink-200">
+              <div className="w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2">Your Matches</h2>
-              <p className="text-gray-600 text-sm">
-                <span className="font-semibold text-sky-600">{typedMatches?.length || 0}</span> titles everyone loves
+              <p className="text-gray-700 text-sm">
+                <span className="font-semibold text-pink-700">{typedMatches?.length || 0}</span> titles everyone loves
               </p>
             </div>
           </Link>

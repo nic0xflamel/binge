@@ -77,10 +77,10 @@ export const typography = {
     h4: 'text-xl font-bold text-gray-900',
   },
   body: {
-    large: 'text-lg text-gray-700',
-    base: 'text-base text-gray-700',
-    small: 'text-sm text-gray-600',
-    xs: 'text-xs text-gray-500',
+    large: 'text-lg text-gray-800',
+    base: 'text-base text-gray-800',
+    small: 'text-sm text-gray-700',
+    xs: 'text-xs text-gray-600',
   },
 } as const;
 
@@ -102,10 +102,10 @@ export const components = {
 
   // Button variants
   button: {
-    primary: `${gradients.primary} text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:${shadows.lg} hover:scale-105 active:scale-95 transform transition-all`,
-    secondary: `bg-sky-50 text-sky-700 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-sky-100 hover:scale-105 active:scale-95 transform transition-all border border-sky-200`,
-    ghost: `bg-gray-100 text-gray-700 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-gray-200 hover:scale-105 active:scale-95 transform transition-all`,
-    danger: `bg-red-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-red-700 hover:scale-105 active:scale-95 transform transition-all`,
+    primary: `bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:${shadows.lg} hover:scale-105 active:scale-95 transform transition-all ${shadows.md}`,
+    secondary: `bg-sky-100 text-sky-700 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-sky-200 hover:scale-105 active:scale-95 transform transition-all border-2 border-sky-300 ${shadows.sm}`,
+    ghost: `bg-gray-200 text-gray-800 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-gray-300 hover:scale-105 active:scale-95 transform transition-all border-2 border-gray-300`,
+    danger: `bg-red-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-red-700 hover:scale-105 active:scale-95 transform transition-all ${shadows.md}`,
   },
 
   // Badge variants
@@ -147,7 +147,7 @@ export const animations = {
 // Helper function to create consistent page layouts
 export const layouts = {
   page: `min-h-screen ${gradients.background}`,
-  pageWithHeader: `min-h-screen bg-gray-50`,
+  pageWithHeader: `min-h-screen ${gradients.background}`,
   container: 'max-w-6xl mx-auto p-6',
   narrowContainer: 'max-w-4xl mx-auto p-6',
 } as const;

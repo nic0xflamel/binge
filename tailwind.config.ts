@@ -5,6 +5,12 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
+  ],
+  safelist: [
+    'from-sky-600',
+    'to-pink-600',
+    'bg-gradient-to-r',
   ],
   theme: {
     extend: {

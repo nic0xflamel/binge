@@ -39,12 +39,12 @@ export default function Header({ groupName, userName }: HeaderProps) {
         }}></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-2 relative z-10">
+      <div className="max-w-6xl mx-auto px-6 py-1 relative z-10">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="hover:opacity-90 transition flex items-center -my-6 md:-my-12 -ml-2">
-              <img src="/logo.png" alt="Binge" className="h-24 md:h-44 w-auto relative z-20 drop-shadow-2xl" />
+            <Link href="/dashboard" className="hover:opacity-90 transition flex items-center -my-2 md:-my-3">
+              <img src="/logo.png" alt="Binge" className="h-20 md:h-24 w-auto drop-shadow-xl" />
             </Link>
           </div>
 
