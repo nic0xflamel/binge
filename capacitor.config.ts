@@ -1,20 +1,17 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
-// Determine if we're in production mode
-const isProduction = process.env.NODE_ENV === 'production';
-
 // Production URL - Your actual Vercel deployment URL
-// You can also set CAPACITOR_SERVER_URL environment variable to override
 const productionUrl = process.env.CAPACITOR_SERVER_URL || 'https://binge-black.vercel.app';
-const developmentUrl = 'http://localhost:3030';
 
+// For mobile builds, always use production unless explicitly overridden
+// To use local dev server: CAPACITOR_SERVER_URL=http://localhost:3030 yarn cap:sync
 const config: CapacitorConfig = {
   appId: 'com.binge.app',
   appName: 'Binge',
   webDir: 'out',
   server: {
-    url: isProduction ? productionUrl : developmentUrl,
-    cleartext: !isProduction, // Only allow cleartext (http) in development
+    url: productionUrl,
+    cleartext: false, // Always use HTTPS for security
     androidScheme: 'https'
   },
   ios: {
