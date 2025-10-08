@@ -399,12 +399,12 @@ export default function SwipePage() {
   const currentTitle = feedItems[currentIndex];
 
   return (
-    <div className={`${layouts.page} h-screen overflow-hidden flex flex-col`}>
+    <div className={`${layouts.page} min-h-screen pb-20`}>
       <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
 
       {/* Solo Swiping Banner */}
       {!groupId && (
-        <div className="flex-shrink-0 max-w-2xl mx-auto px-4 pt-4">
+        <div className="max-w-2xl mx-auto px-4 pt-4">
           <div className={`${gradients.primary} rounded-2xl p-4 text-white shadow-lg animate-slide-up`}>
             <div className="flex items-start gap-3">
               <svg className="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -428,29 +428,27 @@ export default function SwipePage() {
       )}
 
       {/* Card Stack */}
-      <div className="flex-1 flex items-center justify-center overflow-hidden px-4">
-        <div className="w-full max-w-2xl max-h-full flex items-center justify-center">
-          <div className="relative w-full" style={{ maxHeight: 'calc(100vh - 120px)' }}>
-            {/* Next card shadow */}
-            {currentIndex + 1 < feedItems.length && (
-              <div className="absolute inset-0 bg-white/60 rounded-3xl transform scale-95 -z-10" style={{ top: '10px' }} />
-            )}
+      <div className="max-w-2xl mx-auto px-4 py-4">
+        <div className="relative">
+          {/* Next card shadow */}
+          {currentIndex + 1 < feedItems.length && (
+            <div className="absolute inset-0 bg-white/60 rounded-3xl transform scale-95 -z-10" style={{ top: '10px' }} />
+          )}
 
-            {/* Main Card */}
-            <div
-              ref={cardRef}
-              className={`${components.card.solid} overflow-hidden transition-transform flex flex-col`}
-              style={{
-                transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
-                transition: isDragging ? 'none' : 'transform 0.3s ease-out',
-                maxHeight: 'calc(100vh - 120px)',
-              }}
-              onTouchStart={handleTouchStart}
-              onTouchMove={handleTouchMove}
-              onTouchEnd={handleTouchEnd}
-            >
-              {/* Poster */}
-              <div className="aspect-[2/3] max-h-[50vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl flex-shrink-0">
+          {/* Main Card */}
+          <div
+            ref={cardRef}
+            className={`${components.card.solid} overflow-hidden transition-transform`}
+            style={{
+              transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
+              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            {/* Poster */}
+            <div className="aspect-[2/3] max-h-[40vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
               {currentTitle.poster_url ? (
                 <Image
                   src={currentTitle.poster_url}
@@ -470,11 +468,11 @@ export default function SwipePage() {
             </div>
 
             {/* Info */}
-            <div className="p-4 overflow-y-auto flex-1" style={{ maxHeight: '40vh' }}>
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <div className="p-4">
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">
                 {currentTitle.name}
               </h2>
-              <div className="flex items-center gap-3 text-sm font-semibold text-gray-600 mb-5">
+              <div className="flex items-center gap-3 text-sm font-semibold text-gray-600 mb-3">
                 <span>{currentTitle.year}</span>
                 <span>•</span>
                 <span>{currentTitle.runtime_min} min</span>
@@ -482,7 +480,7 @@ export default function SwipePage() {
 
               {/* Genres */}
               {currentTitle.genres && currentTitle.genres.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-3">
+                <div className="flex flex-wrap gap-2 mb-2">
                   {currentTitle.genres.slice(0, 3).map(genre => (
                     <span
                       key={genre}
@@ -496,7 +494,7 @@ export default function SwipePage() {
 
               {/* Vibes */}
               {currentTitle.vibes && currentTitle.vibes.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-5">
+                <div className="flex flex-wrap gap-2 mb-3">
                   {currentTitle.vibes.slice(0, 3).map(vibe => (
                     <span
                       key={vibe}
@@ -509,7 +507,7 @@ export default function SwipePage() {
               )}
 
               {/* Overview */}
-              <p className="text-gray-800 leading-relaxed mb-6 text-[15px]">
+              <p className="text-gray-800 leading-relaxed mb-4 text-sm">
                 {currentTitle.overview}
               </p>
 
@@ -556,7 +554,6 @@ export default function SwipePage() {
           </div>
         </div>
       </div>
-    </div>
 
       {/* Trailer Modal */}
       {showTrailer && currentTitle.trailer_url && (
