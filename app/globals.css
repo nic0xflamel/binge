@@ -5,6 +5,11 @@
 :root {
   --background: #f0f9ff;
   --foreground: #111827;
+  /* Safe area insets - available as CSS variables for selective use */
+  --safe-area-top: env(safe-area-inset-top, 0);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0);
+  --safe-area-left: env(safe-area-inset-left, 0);
+  --safe-area-right: env(safe-area-inset-right, 0);
 }
 
 body {

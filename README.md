@@ -12,12 +12,14 @@ A Hinge-style group picker for movies and TV shows. Swipe on titles with your gr
 - ⭐ **Ratings & Reviews** - Rate titles after watching
 - 🎯 **Preferences** - Filter by services, genres, moods, and runtime
 - 🔒 **RLS Security** - Row-level security for data protection
+- 📱 **Native Mobile Apps** - iOS and Android support via Capacitor
 
 ## Tech Stack
 
 - **Frontend**: Next.js 15 (App Router), React 18, TailwindCSS
 - **Backend**: Supabase (Postgres, Auth, Realtime)
 - **APIs**: TMDB (metadata), JustWatch (streaming availability)
+- **Mobile**: Capacitor (iOS & Android)
 
 ## Architecture
 
@@ -82,6 +84,34 @@ yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+## Mobile App Setup
+
+Your app is now configured for **iOS and Android**! 📱
+
+### Quick Start - Mobile Development
+
+```bash
+# Start Next.js dev server
+yarn dev
+
+# iOS (requires macOS + Xcode)
+yarn cap:open:ios
+
+# Android (requires Android Studio)
+yarn cap:open:android
+```
+
+📖 **Full mobile setup guide**: [MOBILE_SETUP.md](./MOBILE_SETUP.md)
+
+### What's Included
+
+- ✅ Native iOS and Android projects
+- ✅ Haptic feedback on swipes and matches
+- ✅ Status bar styling
+- ✅ Safe area support for notches
+- ✅ Deep linking (`binge://join/GROUP_ID`)
+- ✅ Splash screen configuration
 
 ## Usage Flow
 

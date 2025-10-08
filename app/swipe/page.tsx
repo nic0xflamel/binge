@@ -12,6 +12,7 @@ import { logger } from '@/lib/utils/logger';
 import { RATE_LIMITS, DURATIONS } from '@/lib/constants';
 import { generateFeed, type FeedItem } from '@/lib/services/feedGenerator';
 import { components, layouts, gradients } from '@/lib/design-system';
+import { triggerHaptic } from '@/lib/capacitor/init';
 
 interface MatchResult {
   isMatch: boolean;
@@ -199,6 +200,9 @@ export default function SwipePage() {
           .map(s => s.profiles?.display_name)
           .filter(isNotNull);
 
+        // Trigger celebration haptic
+        await triggerHaptic('heavy');
+
         setMatchResult({
           isMatch: true,
           totalMembers,
@@ -246,6 +250,9 @@ export default function SwipePage() {
         });
 
       if (error) throw error;
+
+      // Trigger haptic feedback
+      await triggerHaptic(decision === 'yes' ? 'medium' : 'light');
 
       // Show immediate feedback
       if (decision === 'yes') {

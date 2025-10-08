@@ -13,7 +13,11 @@
       "Bash(node:*)",
       "mcp__playwright",
       "mcp__grocerease-supabase",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(npx cap init:*)",
+      "Bash(yarn dlx:*)",
+      "Bash(lsof:*)",
+      "Bash(xargs kill:*)"
     ],
     "deny": [],
     "ask": []

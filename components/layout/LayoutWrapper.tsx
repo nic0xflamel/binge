@@ -7,6 +7,9 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import ErrorBoundary from '@/components/ErrorBoundary';
 import { GroupProvider } from '@/lib/context/GroupContext';
+import { initializeCapacitor } from '@/lib/capacitor/init';
+import { initializeDeepLinking, getInitialUrl } from '@/lib/capacitor/deeplinks';
+import { useRouter } from 'next/navigation';
 
 // Pages that should not show the header
 const NO_HEADER_ROUTES = [
@@ -24,11 +27,38 @@ interface LayoutWrapperProps {
 
 export default function LayoutWrapper({ children }: LayoutWrapperProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [groupName, setGroupName] = useState<string | undefined>();
   const [userName, setUserName] = useState<string | undefined>();
   const supabase = createClient();
 
   const shouldShowHeader = !NO_HEADER_ROUTES.some(route => pathname?.startsWith(route));
+
+  // Initialize Capacitor on mount
+  useEffect(() => {
+    const initMobile = async () => {
+      try {
+        await initializeCapacitor();
+
+        // Handle deep links
+        initializeDeepLinking((url) => {
+          console.log('Navigating to deep link:', url);
+          router.push(url);
+        });
+
+        // Check if app was opened via deep link
+        const initialUrl = await getInitialUrl();
+        if (initialUrl) {
+          console.log('App opened with URL:', initialUrl);
+          // Parse and navigate if needed
+        }
+      } catch (error) {
+        console.error('Failed to initialize mobile features:', error);
+      }
+    };
+
+    initMobile();
+  }, [router]);
 
   useEffect(() => {
     if (shouldShowHeader) {
