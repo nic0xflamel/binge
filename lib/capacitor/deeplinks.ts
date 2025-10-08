@@ -16,16 +16,21 @@ export function initializeDeepLinking(
   App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
     console.log('Deep link opened:', event.url);
 
-    // Handle binge:// URLs
-    // Example: binge://join/abc123 -> /join/abc123
+    // Handle custom scheme: binge://join/abc123 -> /join/abc123
     if (event.url.startsWith('binge://')) {
       const path = event.url.replace('binge://', '/');
       onDeepLink(path);
     }
 
-    // Handle https:// URLs (universal links)
-    // Example: https://binge.app/join/abc123 -> /join/abc123
-    else if (event.url.includes('binge.app')) {
+    // Handle custom auth scheme: com.binge.app://auth/callback?code=xxx
+    else if (event.url.startsWith('com.binge.app://')) {
+      const path = event.url.replace('com.binge.app:/', '');
+      onDeepLink(path);
+    }
+
+    // Handle https:// URLs (universal links from Vercel)
+    // Example: https://binge-black.vercel.app/auth/callback?code=xxx
+    else if (event.url.includes('vercel.app') || event.url.includes('binge')) {
       try {
         const url = new URL(event.url);
         onDeepLink(url.pathname + url.search);
