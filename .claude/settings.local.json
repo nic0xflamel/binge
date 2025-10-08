@@ -24,7 +24,8 @@
       "Bash(ruby --version)",
       "Bash(test:*)",
       "Bash(vercel ls:*)",
-      "Bash(npx eslint:*)"
+      "Bash(npx eslint:*)",
+      "Bash(npx cap sync:*)"
     ],
     "deny": [],
     "ask": []

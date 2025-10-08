@@ -54,7 +54,7 @@ export default function ProfileSetupPage() {
       <Card variant="elevated" className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Binge!</h1>
-          <p className="text-gray-600">Let's set up your profile</p>
+          <p className="text-gray-600">Let&apos;s set up your profile</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

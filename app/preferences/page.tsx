@@ -259,7 +259,7 @@ export default function PreferencesPage() {
                     Exclude watched content
                   </span>
                   <p className="text-sm text-gray-600">
-                    Don't show titles you've already rated
+                    Don&apos;t show titles you&apos;ve already rated
                   </p>
                 </div>
               </label>

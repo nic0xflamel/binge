@@ -208,7 +208,7 @@ export default async function DashboardPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No matches yet</h3>
               <p className="text-gray-600 mb-6 max-w-sm mx-auto">
-                When your group agrees on titles, they'll show up here. Get everyone swiping!
+                When your group agrees on titles, they&apos;ll show up here. Get everyone swiping!
               </p>
               <Link
                 href="/swipe"

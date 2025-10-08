@@ -13,7 +13,7 @@ export default function AuthCodeErrorPage() {
           Authentication Failed
         </h1>
         <p className="text-gray-600 mb-6">
-          We couldn't verify your magic link. This could happen if:
+          We couldn&apos;t verify your magic link. This could happen if:
         </p>
         <ul className="text-left text-gray-600 mb-6 space-y-2">
           <li className="flex items-start">

@@ -148,7 +148,7 @@ export default function SwipePage() {
   /**
    * Checks if a swiped title has reached the threshold for a match
    */
-  const checkForMatch = async (titleId: number) => {
+  const checkForMatch = useCallback(async (titleId: number) => {
     if (!groupId) return;
 
     try {
@@ -219,7 +219,7 @@ export default function SwipePage() {
     } catch (error) {
       logger.error('Error checking for match', error, { titleId });
     }
-  };
+  }, [groupId, supabase]);
 
   /**
    * Touch handlers for swipe gestures
@@ -366,7 +366,7 @@ export default function SwipePage() {
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-3">All Caught Up!</h1>
           <p className="text-gray-800 mb-8 leading-relaxed">
-            You've swiped through all available titles. Check back soon for more recommendations!
+            You&apos;ve swiped through all available titles. Check back soon for more recommendations!
           </p>
           <button
             onClick={() => {
@@ -399,12 +399,12 @@ export default function SwipePage() {
   const currentTitle = feedItems[currentIndex];
 
   return (
-    <div className={`${layouts.page} pb-24`}>
+    <div className={`${layouts.page} h-screen overflow-hidden flex flex-col`}>
       <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
 
       {/* Solo Swiping Banner */}
       {!groupId && (
-        <div className="max-w-2xl mx-auto px-4 pt-8">
+        <div className="flex-shrink-0 max-w-2xl mx-auto px-4 pt-4">
           <div className={`${gradients.primary} rounded-2xl p-4 text-white shadow-lg animate-slide-up`}>
             <div className="flex items-start gap-3">
               <svg className="w-6 h-6 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -413,7 +413,7 @@ export default function SwipePage() {
               <div className="flex-1">
                 <p className="font-semibold mb-1">Swiping Solo</p>
                 <p className="text-sm text-sky-100 mb-3">
-                  You're building your personal watchlist. Join a group to find matches with friends!
+                  You&apos;re building your personal watchlist. Join a group to find matches with friends!
                 </p>
                 <button
                   onClick={() => router.push('/onboarding/group')}
@@ -428,27 +428,29 @@ export default function SwipePage() {
       )}
 
       {/* Card Stack */}
-      <div className="max-w-2xl mx-auto px-4 pt-8 py-6">
-        <div className="relative">
-          {/* Next card shadow */}
-          {currentIndex + 1 < feedItems.length && (
-            <div className="absolute inset-0 bg-white/60 rounded-3xl transform scale-95 -z-10" style={{ top: '10px' }} />
-          )}
+      <div className="flex-1 flex items-center justify-center overflow-hidden px-4">
+        <div className="w-full max-w-2xl max-h-full flex items-center justify-center">
+          <div className="relative w-full" style={{ maxHeight: 'calc(100vh - 120px)' }}>
+            {/* Next card shadow */}
+            {currentIndex + 1 < feedItems.length && (
+              <div className="absolute inset-0 bg-white/60 rounded-3xl transform scale-95 -z-10" style={{ top: '10px' }} />
+            )}
 
-          {/* Main Card */}
-          <div
-            ref={cardRef}
-            className={`${components.card.solid} overflow-hidden transition-transform`}
-            style={{
-              transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
-              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
-            }}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-          >
-            {/* Poster */}
-            <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
+            {/* Main Card */}
+            <div
+              ref={cardRef}
+              className={`${components.card.solid} overflow-hidden transition-transform flex flex-col`}
+              style={{
+                transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
+                transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+                maxHeight: 'calc(100vh - 120px)',
+              }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            >
+              {/* Poster */}
+              <div className="aspect-[2/3] max-h-[50vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl flex-shrink-0">
               {currentTitle.poster_url ? (
                 <Image
                   src={currentTitle.poster_url}
@@ -468,7 +470,7 @@ export default function SwipePage() {
             </div>
 
             {/* Info */}
-            <div className="p-6 pb-8">
+            <div className="p-4 overflow-y-auto flex-1" style={{ maxHeight: '40vh' }}>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 {currentTitle.name}
               </h2>
@@ -554,6 +556,7 @@ export default function SwipePage() {
           </div>
         </div>
       </div>
+    </div>
 
       {/* Trailer Modal */}
       {showTrailer && currentTitle.trailer_url && (
@@ -608,7 +611,7 @@ export default function SwipePage() {
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3">It's a Match!</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-3">It&apos;s a Match!</h2>
             <p className="text-lg text-gray-600 mb-6">
               <span className="font-semibold text-sky-600">{matchResult.yesVotes}</span> out of <span className="font-semibold">{matchResult.totalMembers}</span> members loved this title
             </p>
