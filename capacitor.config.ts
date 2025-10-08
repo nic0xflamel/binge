@@ -3,9 +3,9 @@ import type { CapacitorConfig } from '@capacitor/cli';
 // Determine if we're in production mode
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Production URL - UPDATE THIS after deploying to Vercel
-// You can also set CAPACITOR_SERVER_URL environment variable
-const productionUrl = process.env.CAPACITOR_SERVER_URL || 'https://your-app.vercel.app';
+// Production URL - Your actual Vercel deployment URL
+// You can also set CAPACITOR_SERVER_URL environment variable to override
+const productionUrl = process.env.CAPACITOR_SERVER_URL || 'https://binge-c572jw32a-nics-projects-12d5bf00.vercel.app';
 const developmentUrl = 'http://localhost:3000';
 
 const config: CapacitorConfig = {
