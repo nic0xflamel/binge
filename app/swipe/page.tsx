@@ -399,7 +399,7 @@ export default function SwipePage() {
   const currentTitle = feedItems[currentIndex];
 
   return (
-    <div className={`${layouts.page} min-h-screen pb-20`}>
+    <div className={`${layouts.page} min-h-screen pb-16`}>
       <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
 
       {/* Solo Swiping Banner */}
@@ -448,7 +448,7 @@ export default function SwipePage() {
             onTouchEnd={handleTouchEnd}
           >
             {/* Poster */}
-            <div className="aspect-[2/3] max-h-[40vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
+            <div className="w-full h-[50vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
               {currentTitle.poster_url ? (
                 <Image
                   src={currentTitle.poster_url}
@@ -512,7 +512,7 @@ export default function SwipePage() {
               </p>
 
               {/* Actions */}
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => handleSwipe('no')}
                   disabled={swiping || rateLimitCooldown}
