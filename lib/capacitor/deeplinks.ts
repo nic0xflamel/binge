@@ -45,8 +45,8 @@ export async function getInitialUrl(): Promise<string | null> {
   if (!isNative()) return null;
 
   try {
-    const { url } = await App.getLaunchUrl();
-    return url || null;
+    const result = await App.getLaunchUrl();
+    return result?.url || null;
   } catch (error) {
     console.error('Error getting launch URL:', error);
     return null;

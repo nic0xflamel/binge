@@ -17,7 +17,8 @@
       "Bash(npx cap init:*)",
       "Bash(yarn dlx:*)",
       "Bash(lsof:*)",
-      "Bash(xargs kill:*)"
+      "Bash(xargs kill:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
