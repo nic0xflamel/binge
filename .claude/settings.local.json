@@ -23,7 +23,8 @@
       "Bash(git push:*)",
       "Bash(ruby --version)",
       "Bash(test:*)",
-      "Bash(vercel ls:*)"
+      "Bash(vercel ls:*)",
+      "Bash(npx eslint:*)"
     ],
     "deny": [],
     "ask": []

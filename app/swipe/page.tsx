@@ -39,6 +39,11 @@ export default function SwipePage() {
   const lastSwipeTime = useRef<number>(0);
   const isLoadingMoreRef = useRef(false);
   const feedCacheRef = useRef<Map<number, FeedItem[]>>(new Map()); // Cache feed results by offset
+  const touchStartX = useRef<number>(0);
+  const touchStartY = useRef<number>(0);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
     initializeFeed();
@@ -217,6 +222,31 @@ export default function SwipePage() {
   };
 
   /**
+   * Touch handlers for swipe gestures
+   */
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (swiping || rateLimitCooldown) return;
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    setIsDragging(true);
+  }, [swiping, rateLimitCooldown]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || swiping || rateLimitCooldown) return;
+
+    const currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    const deltaX = currentX - touchStartX.current;
+    const deltaY = currentY - touchStartY.current;
+
+    // Only allow horizontal swiping if the gesture is more horizontal than vertical
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      e.preventDefault();
+      setDragOffset({ x: deltaX, y: deltaY * 0.1 });
+    }
+  }, [isDragging, swiping, rateLimitCooldown]);
+
+  /**
    * Handles user swipe decision (yes/no) with rate limiting
    */
   const handleSwipe = useCallback(async (decision: 'yes' | 'no') => {
@@ -274,7 +304,23 @@ export default function SwipePage() {
       toast.error('Failed to save your swipe. Please try again.');
       setSwiping(false);
     }
-  }, [swiping, currentIndex, feedItems, groupId, rateLimitCooldown, supabase, toast]);
+  }, [swiping, currentIndex, feedItems, groupId, rateLimitCooldown, supabase, toast, checkForMatch]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    const threshold = 100; // Minimum swipe distance
+
+    if (Math.abs(dragOffset.x) > threshold) {
+      // Determine swipe direction
+      const decision = dragOffset.x > 0 ? 'yes' : 'no';
+      handleSwipe(decision);
+    }
+
+    // Reset drag offset
+    setDragOffset({ x: 0, y: 0 });
+  }, [isDragging, dragOffset.x, handleSwipe]);
 
   if (loading) {
     return (
@@ -390,7 +436,17 @@ export default function SwipePage() {
           )}
 
           {/* Main Card */}
-          <div className={`${components.card.solid} overflow-hidden`}>
+          <div
+            ref={cardRef}
+            className={`${components.card.solid} overflow-hidden transition-transform`}
+            style={{
+              transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
+              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+            }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             {/* Poster */}
             <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
               {currentTitle.poster_url ? (
@@ -412,7 +468,7 @@ export default function SwipePage() {
             </div>
 
             {/* Info */}
-            <div className="p-6">
+            <div className="p-6 pb-8">
               <h2 className="text-3xl font-bold text-gray-900 mb-2">
                 {currentTitle.name}
               </h2>
