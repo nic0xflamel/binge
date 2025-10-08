@@ -18,7 +18,11 @@
       "Bash(yarn dlx:*)",
       "Bash(lsof:*)",
       "Bash(xargs kill:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(ruby --version)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

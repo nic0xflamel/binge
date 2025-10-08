@@ -12,6 +12,7 @@ import { emailSchema, type EmailFormData } from '@/lib/validation';
 import { useToast } from '@/lib/hooks/useToast';
 import { ToastContainer } from '@/components/ui/Toast';
 import { logger } from '@/lib/utils/logger';
+import { getAuthRedirectUrl } from '@/lib/auth/config';
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ export default function LoginPage() {
       const { error } = await supabase.auth.signInWithOtp({
         email: data.email,
         options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
+          emailRedirectTo: getAuthRedirectUrl(),
         },
       });
 
