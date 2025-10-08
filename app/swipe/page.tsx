@@ -512,7 +512,7 @@ export default function SwipePage() {
               </p>
 
               {/* Actions */}
-              <div className="flex gap-2 px-2">
+              <div className="flex gap-3">
                 <button
                   onClick={() => handleSwipe('no')}
                   disabled={swiping || rateLimitCooldown}
