@@ -455,7 +455,7 @@ export default function SwipePage() {
                   alt={currentTitle.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 672px"
-                  className="object-cover"
+                  className="object-contain"
                   priority
                 />
               ) : (
@@ -468,7 +468,7 @@ export default function SwipePage() {
             </div>
 
             {/* Info */}
-            <div className="p-4">
+            <div className="px-4 py-4">
               <h2 className="text-2xl font-bold text-gray-900 mb-1">
                 {currentTitle.name}
               </h2>
@@ -512,7 +512,7 @@ export default function SwipePage() {
               </p>
 
               {/* Actions */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 px-2">
                 <button
                   onClick={() => handleSwipe('no')}
                   disabled={swiping || rateLimitCooldown}
