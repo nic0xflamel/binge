@@ -512,11 +512,11 @@ export default function SwipePage() {
               </p>
 
               {/* Actions */}
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={() => handleSwipe('no')}
                   disabled={swiping || rateLimitCooldown}
-                  className={`flex-1 ${components.button.ghost} disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group`}
+                  className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 px-3 rounded-lg hover:bg-gray-300 hover:scale-105 active:scale-95 transform transition-all border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
                   aria-label={`Skip ${currentTitle.name}`}
                 >
                   <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -528,7 +528,7 @@ export default function SwipePage() {
                   <button
                     onClick={() => setShowTrailer(true)}
                     disabled={swiping}
-                    className={`flex-1 ${components.button.secondary} disabled:opacity-50 flex items-center justify-center gap-2 group`}
+                    className="flex-1 bg-sky-100 text-sky-700 font-semibold py-3 px-3 rounded-lg hover:bg-sky-200 hover:scale-105 active:scale-95 transform transition-all border-2 border-sky-300 shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 group"
                     aria-label={`Watch trailer for ${currentTitle.name}`}
                   >
                     <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
@@ -540,7 +540,7 @@ export default function SwipePage() {
                 <button
                   onClick={() => handleSwipe('yes')}
                   disabled={swiping || rateLimitCooldown}
-                  className={`flex-1 ${components.button.primary} disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group hover:shadow-xl`}
+                  className="flex-1 bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 px-3 rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transform transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group hover:shadow-xl"
                   style={{ backgroundImage: 'linear-gradient(to right, #0284c7, #db2777)' }}
                   aria-label={`Like ${currentTitle.name}`}
                 >
