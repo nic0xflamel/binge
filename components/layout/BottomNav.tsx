@@ -46,8 +46,8 @@ export default function BottomNav() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-20 md:hidden">
-      <div className="max-w-6xl mx-auto px-6 py-3">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-20 md:hidden" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.75rem)' }} role="navigation" aria-label="Main navigation">
+      <div className="max-w-6xl mx-auto px-4 py-2">
         <div className="flex items-center justify-around">
           {navItems.map(item => {
             const isActive = pathname === item.href || (item.href !== '/dashboard' && pathname?.startsWith(item.href));
@@ -56,11 +56,12 @@ export default function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 py-2 px-4 transition-colors ${
+                className={`flex flex-col items-center gap-1 py-2 px-4 rounded-lg transition-all duration-200 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-inset ${
                   isActive
-                    ? 'text-sky-600'
-                    : 'text-gray-500 hover:text-sky-600'
+                    ? 'text-sky-600 bg-sky-50'
+                    : 'text-gray-500 hover:text-sky-600 hover:bg-gray-50'
                 }`}
+                aria-current={isActive ? 'page' : undefined}
               >
                 {item.icon}
                 <span className="text-xs font-medium">{item.label}</span>

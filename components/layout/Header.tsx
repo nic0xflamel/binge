@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -16,6 +16,21 @@ export default function Header({ groupName, userName }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const supabase = createClient();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setShowMenu(false);
+      }
+    };
+
+    if (showMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [showMenu]);
 
   const handleLogout = async () => {
     setLoading(true);
@@ -30,79 +45,87 @@ export default function Header({ groupName, userName }: HeaderProps) {
   };
 
   return (
-    <header className="bg-sky-500 shadow-lg relative overflow-visible">
+    <header className="bg-sky-500 shadow-lg relative overflow-visible" role="banner">
       {/* Background pattern */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10" aria-hidden="true">
         <div className="absolute inset-0" style={{
           backgroundImage: `radial-gradient(circle at 20px 20px, white 2px, transparent 0)`,
           backgroundSize: '40px 40px'
         }}></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-6 py-1 relative z-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-1 relative z-10">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="hover:opacity-90 transition flex items-center -my-2 md:-my-3">
-              <img src="/logo.png" alt="Binge" className="h-20 md:h-24 w-auto drop-shadow-xl" />
+            <Link href="/dashboard" className="hover:opacity-90 transition flex items-center">
+              <img src="/logo.png" alt="Binge" className="h-12 md:h-14 w-auto drop-shadow-xl" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-6">
+          <nav className="hidden md:flex items-center gap-6" role="navigation" aria-label="Main navigation">
             <Link
               href="/dashboard"
-              className={`font-medium transition ${
+              className={`font-medium transition-colors duration-200 px-2 py-1 rounded-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-500 ${
                 pathname === '/dashboard'
                   ? 'text-white border-b-2 border-white pb-1'
                   : 'text-white/90 hover:text-white'
               }`}
+              aria-current={pathname === '/dashboard' ? 'page' : undefined}
             >
               Dashboard
             </Link>
             <Link
               href="/swipe"
-              className={`font-medium transition ${
+              className={`font-medium transition-colors duration-200 px-2 py-1 rounded-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-500 ${
                 pathname === '/swipe'
                   ? 'text-white border-b-2 border-white pb-1'
                   : 'text-white/90 hover:text-white'
               }`}
+              aria-current={pathname === '/swipe' ? 'page' : undefined}
             >
               Swipe
             </Link>
             <Link
               href="/matches"
-              className={`font-medium transition ${
+              className={`font-medium transition-colors duration-200 px-2 py-1 rounded-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-500 ${
                 pathname?.startsWith('/matches')
                   ? 'text-white border-b-2 border-white pb-1'
                   : 'text-white/90 hover:text-white'
               }`}
+              aria-current={pathname?.startsWith('/matches') ? 'page' : undefined}
             >
               Matches
             </Link>
             <Link
               href="/group"
-              className={`font-medium transition ${
+              className={`font-medium transition-colors duration-200 px-2 py-1 rounded-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-500 ${
                 pathname === '/group'
                   ? 'text-white border-b-2 border-white pb-1'
                   : 'text-white/90 hover:text-white'
               }`}
+              aria-current={pathname === '/group' ? 'page' : undefined}
             >
               Group
             </Link>
-            <div className="relative">
+            <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setShowMenu(!showMenu)}
-                className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white font-semibold transition backdrop-blur-sm border-2 border-white/40"
+                className="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white font-semibold transition-colors duration-200 backdrop-blur-sm border-2 border-white/40 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-sky-500"
+                aria-label="User menu"
+                aria-expanded={showMenu}
+                aria-haspopup="true"
               >
                 {userName?.[0]?.toUpperCase() || 'U'}
               </button>
               {showMenu && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-gray-200">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-1 z-50 border border-gray-200" role="menu">
                   <button
                     onClick={handleLogout}
                     disabled={loading}
-                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition disabled:opacity-50"
+                    className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors duration-200 disabled:opacity-50 focus:outline-none focus:bg-gray-100"
+                    role="menuitem"
                   >
                     {loading ? 'Logging out...' : 'Logout'}
                   </button>

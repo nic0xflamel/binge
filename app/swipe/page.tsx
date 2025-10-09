@@ -33,6 +33,7 @@ export default function SwipePage() {
   const [matchResult, setMatchResult] = useState<MatchResult | null>(null);
   const [showMatchModal, setShowMatchModal] = useState(false);
   const [rateLimitCooldown, setRateLimitCooldown] = useState(false);
+  const [cooldownProgress, setCooldownProgress] = useState(100);
   const router = useRouter();
   const supabase = createClient();
   const toast = useToast();
@@ -44,10 +45,29 @@ export default function SwipePage() {
   const cardRef = useRef<HTMLDivElement>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [swipeDirection, setSwipeDirection] = useState<'yes' | 'no' | null>(null);
+  const [isExiting, setIsExiting] = useState(false);
 
   useEffect(() => {
     initializeFeed();
   }, []);
+
+  // Handle ESC key for modals
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (showMatchModal) {
+          setShowMatchModal(false);
+          setMatchResult(null);
+        } else if (showTrailer) {
+          setShowTrailer(false);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [showMatchModal, showTrailer]);
 
   // Automatically load more when running low
   useEffect(() => {
@@ -96,7 +116,9 @@ export default function SwipePage() {
       }
     } catch (error) {
       logger.error('Error initializing feed', error);
-      toast.error('Failed to load your feed. Please try refreshing.');
+      if (!retry) {
+        toast.error('Failed to load your feed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -138,7 +160,7 @@ export default function SwipePage() {
       }
     } catch (error) {
       logger.error('Error loading more items', error);
-      toast.error('Failed to load more items. Please try refreshing.');
+      toast.error('Failed to load more items.');
     } finally {
       setLoadingMore(false);
       isLoadingMoreRef.current = false;
@@ -243,13 +265,21 @@ export default function SwipePage() {
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       e.preventDefault();
       setDragOffset({ x: deltaX, y: deltaY * 0.1 });
+
+      // Update swipe direction hint based on position
+      const threshold = 100;
+      if (Math.abs(deltaX) > threshold) {
+        setSwipeDirection(deltaX > 0 ? 'yes' : 'no');
+      } else {
+        setSwipeDirection(null);
+      }
     }
   }, [isDragging, swiping, rateLimitCooldown]);
 
   /**
    * Handles user swipe decision (yes/no) with rate limiting
    */
-  const handleSwipe = useCallback(async (decision: 'yes' | 'no') => {
+  const handleSwipe = useCallback(async (decision: 'yes' | 'no', animated = false) => {
     // Check if already swiping or rate limited
     if (swiping || currentIndex >= feedItems.length || !groupId || rateLimitCooldown) return;
 
@@ -258,13 +288,44 @@ export default function SwipePage() {
     const timeSinceLastSwipe = now - lastSwipeTime.current;
     if (timeSinceLastSwipe < RATE_LIMITS.SWIPE_COOLDOWN_MS) {
       setRateLimitCooldown(true);
-      setTimeout(() => setRateLimitCooldown(false), RATE_LIMITS.SWIPE_COOLDOWN_MS - timeSinceLastSwipe);
+      const remainingTime = RATE_LIMITS.SWIPE_COOLDOWN_MS - timeSinceLastSwipe;
+
+      // Animate cooldown progress
+      const startTime = Date.now();
+      const intervalId = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.max(0, 100 - (elapsed / remainingTime) * 100);
+        setCooldownProgress(progress);
+
+        if (progress <= 0) {
+          clearInterval(intervalId);
+          setCooldownProgress(100);
+        }
+      }, 16); // ~60fps
+
+      setTimeout(() => {
+        setRateLimitCooldown(false);
+        setCooldownProgress(100);
+        clearInterval(intervalId);
+      }, remainingTime);
       return;
     }
 
     lastSwipeTime.current = now;
     setSwiping(true);
     const currentItem = feedItems[currentIndex];
+
+    // If animated (from touch gesture), trigger exit animation
+    if (animated) {
+      setIsExiting(true);
+      setSwipeDirection(decision);
+      // Animate card off screen
+      const exitDistance = window.innerWidth + 100;
+      setDragOffset({
+        x: decision === 'yes' ? exitDistance : -exitDistance,
+        y: 0
+      });
+    }
 
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -298,11 +359,17 @@ export default function SwipePage() {
       setTimeout(() => {
         setCurrentIndex(prev => prev + 1);
         setSwiping(false);
-      }, DURATIONS.CARD_TRANSITION_MS);
+        setIsExiting(false);
+        setDragOffset({ x: 0, y: 0 });
+        setSwipeDirection(null);
+      }, animated ? 300 : DURATIONS.CARD_TRANSITION_MS);
     } catch (error) {
       logger.error('Error swiping', error, { titleId: currentItem.id, decision });
-      toast.error('Failed to save your swipe. Please try again.');
+      toast.error('Failed to save your swipe.');
       setSwiping(false);
+      setIsExiting(false);
+      setDragOffset({ x: 0, y: 0 });
+      setSwipeDirection(null);
     }
   }, [swiping, currentIndex, feedItems, groupId, rateLimitCooldown, supabase, toast, checkForMatch]);
 
@@ -310,16 +377,17 @@ export default function SwipePage() {
     if (!isDragging) return;
     setIsDragging(false);
 
-    const threshold = 100; // Minimum swipe distance
+    const threshold = 80; // Reduced threshold for easier swiping
 
     if (Math.abs(dragOffset.x) > threshold) {
-      // Determine swipe direction
+      // Determine swipe direction and trigger animated swipe
       const decision = dragOffset.x > 0 ? 'yes' : 'no';
-      handleSwipe(decision);
+      handleSwipe(decision, true); // Pass true for animated exit
+    } else {
+      // Not enough swipe distance, reset position
+      setDragOffset({ x: 0, y: 0 });
+      setSwipeDirection(null);
     }
-
-    // Reset drag offset
-    setDragOffset({ x: 0, y: 0 });
   }, [isDragging, dragOffset.x, handleSwipe]);
 
   if (loading) {
@@ -399,7 +467,7 @@ export default function SwipePage() {
   const currentTitle = feedItems[currentIndex];
 
   return (
-    <div className={`${layouts.page} min-h-screen pb-16`}>
+    <div className={`${layouts.page} min-h-screen pb-20 md:pb-8`}>
       <ToastContainer toasts={toast.toasts} onClose={toast.removeToast} />
 
       {/* Solo Swiping Banner */}
@@ -428,7 +496,7 @@ export default function SwipePage() {
       )}
 
       {/* Card Stack */}
-      <div className="max-w-2xl mx-auto px-4 py-4">
+      <div className="max-w-2xl mx-auto px-3 sm:px-4 py-2 sm:py-4">
         <div className="relative">
           {/* Next card shadow */}
           {currentIndex + 1 < feedItems.length && (
@@ -438,24 +506,56 @@ export default function SwipePage() {
           {/* Main Card */}
           <div
             ref={cardRef}
-            className={`${components.card.solid} overflow-hidden transition-transform`}
+            className={`${components.card.solid} overflow-hidden relative`}
             style={{
               transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
-              transition: isDragging ? 'none' : 'transform 0.3s ease-out',
+              transition: isDragging ? 'none' : isExiting ? 'transform 0.3s cubic-bezier(0.4, 0, 1, 1)' : 'transform 0.3s ease-out',
+              opacity: isExiting ? 0 : 1 - Math.abs(dragOffset.x) / 500,
             }}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
+            {/* Swipe Direction Indicators */}
+            {isDragging && (
+              <>
+                <div
+                  className="absolute top-6 sm:top-8 right-6 sm:right-8 z-10 transition-opacity duration-200 pointer-events-none"
+                  style={{
+                    opacity: dragOffset.x > 80 ? Math.min((dragOffset.x - 80) / 100, 1) : 0,
+                  }}
+                >
+                  <div className="bg-gradient-to-r from-sky-500 to-pink-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-base sm:text-lg shadow-lg flex items-center gap-2 border-3 sm:border-4 border-white">
+                    <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                    </svg>
+                    LIKE
+                  </div>
+                </div>
+                <div
+                  className="absolute top-6 sm:top-8 left-6 sm:left-8 z-10 transition-opacity duration-200 pointer-events-none"
+                  style={{
+                    opacity: dragOffset.x < -80 ? Math.min((-dragOffset.x - 80) / 100, 1) : 0,
+                  }}
+                >
+                  <div className="bg-gray-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-base sm:text-lg shadow-lg flex items-center gap-2 border-3 sm:border-4 border-white">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    PASS
+                  </div>
+                </div>
+              </>
+            )}
             {/* Poster */}
-            <div className="w-full h-[50vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-3xl">
+            <div className="w-full h-[45vh] sm:h-[50vh] bg-gradient-to-br from-sky-100 to-pink-100 relative rounded-t-xl">
               {currentTitle.poster_url ? (
                 <Image
                   src={currentTitle.poster_url}
                   alt={currentTitle.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 672px"
-                  className="object-contain"
+                  className="object-cover"
                   priority
                 />
               ) : (
@@ -468,11 +568,11 @@ export default function SwipePage() {
             </div>
 
             {/* Info */}
-            <div className="px-4 py-4">
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+            <div className="px-4 sm:px-6 py-3 sm:py-4">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 leading-tight">
                 {currentTitle.name}
               </h2>
-              <div className="flex items-center gap-3 text-sm font-semibold text-gray-600 mb-3">
+              <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-gray-600 mb-2 sm:mb-3">
                 <span>{currentTitle.year}</span>
                 <span>•</span>
                 <span>{currentTitle.runtime_min} min</span>
@@ -484,7 +584,7 @@ export default function SwipePage() {
                   {currentTitle.genres.slice(0, 3).map(genre => (
                     <span
                       key={genre}
-                      className="px-3 py-1.5 bg-sky-100 text-sky-800 rounded-full text-sm font-semibold border border-sky-200"
+                      className={components.badge.primary}
                     >
                       {genre}
                     </span>
@@ -498,7 +598,7 @@ export default function SwipePage() {
                   {currentTitle.vibes.slice(0, 3).map(vibe => (
                     <span
                       key={vibe}
-                      className="px-3 py-1.5 bg-pink-100 text-pink-800 rounded-full text-sm font-semibold border border-pink-200"
+                      className={components.badge.secondary}
                     >
                       {vibe}
                     </span>
@@ -507,47 +607,58 @@ export default function SwipePage() {
               )}
 
               {/* Overview */}
-              <p className="text-gray-800 leading-relaxed mb-4 text-sm">
+              <p className="text-gray-800 leading-relaxed mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-3 sm:line-clamp-none">
                 {currentTitle.overview}
               </p>
 
               {/* Actions */}
-              <div className="flex gap-2">
+              <div className="flex gap-2 sm:gap-3">
                 <button
                   onClick={() => handleSwipe('no')}
                   disabled={swiping || rateLimitCooldown}
-                  className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 px-3 rounded-lg hover:bg-gray-300 hover:scale-105 active:scale-95 transform transition-all border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group"
+                  className="flex-1 bg-gray-200 text-gray-800 font-semibold py-3 px-2 sm:px-3 rounded-lg hover:bg-gray-300 active:scale-95 transform transition-all duration-200 border-2 border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 sm:gap-2 group min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 relative"
                   aria-label={`Skip ${currentTitle.name}`}
                 >
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  {rateLimitCooldown && (
+                    <span className="absolute inset-0 bg-gray-400/30 rounded-lg flex items-center justify-center text-xs font-medium overflow-hidden">
+                      <span className="absolute inset-0 bg-gray-600/20 origin-left transition-transform" style={{ transform: `scaleX(${cooldownProgress / 100})` }} />
+                      <span className="relative z-10">Wait...</span>
+                    </span>
+                  )}
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
-                  Pass
+                  <span className="text-sm sm:text-base">Pass</span>
                 </button>
                 {currentTitle.trailer_url && (
                   <button
                     onClick={() => setShowTrailer(true)}
                     disabled={swiping}
-                    className="flex-1 bg-sky-100 text-sky-700 font-semibold py-3 px-3 rounded-lg hover:bg-sky-200 hover:scale-105 active:scale-95 transform transition-all border-2 border-sky-300 shadow-sm disabled:opacity-50 flex items-center justify-center gap-2 group"
+                    className="flex-1 bg-sky-100 text-sky-700 font-semibold py-3 px-2 sm:px-3 rounded-lg hover:bg-sky-200 active:scale-95 transform transition-all duration-200 border-2 border-sky-300 shadow-sm disabled:opacity-50 flex items-center justify-center gap-1 sm:gap-2 group min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
                     aria-label={`Watch trailer for ${currentTitle.name}`}
                   >
-                    <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" />
                     </svg>
-                    Trailer
+                    <span className="hidden sm:inline text-sm sm:text-base">Trailer</span>
                   </button>
                 )}
                 <button
                   onClick={() => handleSwipe('yes')}
                   disabled={swiping || rateLimitCooldown}
-                  className="flex-1 bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 px-3 rounded-lg hover:shadow-lg hover:scale-105 active:scale-95 transform transition-all shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 group hover:shadow-xl"
-                  style={{ backgroundImage: 'linear-gradient(to right, #0284c7, #db2777)' }}
+                  className="flex-1 bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 sm:py-3.5 px-2 sm:px-3 rounded-lg hover:shadow-lg active:scale-95 transform transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1 sm:gap-2 group hover:shadow-xl min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 relative"
                   aria-label={`Like ${currentTitle.name}`}
                 >
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                  {rateLimitCooldown && (
+                    <span className="absolute inset-0 bg-gray-800/50 rounded-lg flex items-center justify-center text-xs font-medium overflow-hidden">
+                      <span className="absolute inset-0 bg-gray-900/30 origin-left transition-transform" style={{ transform: `scaleX(${cooldownProgress / 100})` }} />
+                      <span className="relative z-10">Wait...</span>
+                    </span>
+                  )}
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6 group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                   </svg>
-                  Like
+                  <span className="text-sm sm:text-base">Like</span>
                 </button>
               </div>
             </div>

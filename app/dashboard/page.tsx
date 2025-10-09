@@ -50,12 +50,12 @@ export default async function DashboardPage() {
 
   return (
     <div className={layouts.page}>
-      <div className="max-w-6xl mx-auto p-6 space-y-6 pb-24 pt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-4 sm:space-y-6 pb-20 md:pb-8 pt-4 sm:pt-8">
         {/* Quick Actions */}
         <div className="grid md:grid-cols-2 gap-5 animate-fade-in">
           {/* Start Swiping Card */}
           <Link href="/swipe" className="group">
-            <div className="bg-gradient-to-br from-sky-100 to-sky-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all hover:-translate-y-1 border border-sky-200">
+            <div className="bg-gradient-to-br from-sky-100 to-sky-200 rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-all duration-200 active:scale-95 border border-sky-200">
               <div className="w-14 h-14 bg-gradient-to-br from-sky-500 to-sky-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
@@ -70,7 +70,7 @@ export default async function DashboardPage() {
 
           {/* Matches Card */}
           <Link href="/matches" className="group">
-            <div className="bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-all hover:-translate-y-1 border border-pink-200">
+            <div className="bg-gradient-to-br from-pink-100 to-pink-200 rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-all duration-200 active:scale-95 border border-pink-200">
               <div className="w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-md">
                 <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -85,7 +85,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* My Likes */}
-        <div className={`${components.card.base} p-8 animate-slide-up`}>
+        <div className={`${components.card.base} p-4 sm:p-6 md:p-8 animate-slide-up`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">My Likes</h2>
@@ -105,7 +105,7 @@ export default async function DashboardPage() {
                   className="group"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
-                  <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-2xl transition-all relative group-hover:scale-105 duration-300">
+                  <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-200 relative group-hover:scale-105">
                     {like.titles?.poster_url ? (
                       <Image
                         src={like.titles.poster_url}
@@ -158,7 +158,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Recent Matches */}
-        <div className={`${components.card.base} p-8 animate-slide-up`}>
+        <div className={`${components.card.base} p-4 sm:p-6 md:p-8 animate-slide-up`}>
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">Group Matches</h2>
@@ -174,7 +174,7 @@ export default async function DashboardPage() {
                   className="group"
                   style={{ animationDelay: `${idx * 50}ms` }}
                 >
-                  <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-2xl transition-all relative group-hover:scale-105 duration-300">
+                  <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-200 relative group-hover:scale-105">
                     {match.titles?.poster_url ? (
                       <Image
                         src={match.titles.poster_url}
@@ -221,7 +221,7 @@ export default async function DashboardPage() {
         </div>
 
         {/* Quick Links */}
-        <div className={`${components.card.base} p-8`}>
+        <div className={`${components.card.base} p-4 sm:p-6 md:p-8`}>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Settings</h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Link

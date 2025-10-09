@@ -75,9 +75,9 @@ export default async function MatchesPage() {
 
   return (
     <div className={layouts.pageWithHeader}>
-      <div className="max-w-6xl mx-auto p-6 pt-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-20 md:pb-8">
         {typedMatches && typedMatches.length > 0 ? (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {typedMatches.map(match => {
               const title = match.titles;
               if (!title) return null;
@@ -105,17 +105,20 @@ export default async function MatchesPage() {
                         </div>
                       )}
                       {/* Match badge */}
-                      <div className={`absolute top-2 right-2 ${components.badge.gradient}`}>
-                        ✨ Match
+                      <div className={`absolute top-2 right-2 ${components.badge.gradient} flex items-center gap-1`}>
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                          <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                        </svg>
+                        <span>Match</span>
                       </div>
                     </div>
 
                     {/* Info */}
-                    <div className="p-4">
-                      <h3 className="font-bold text-gray-900 mb-1 line-clamp-2">
+                    <div className="p-3 sm:p-4">
+                      <h3 className="font-bold text-gray-900 mb-1 line-clamp-2 text-sm sm:text-base">
                         {title.name}
                       </h3>
-                      <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                      <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-2">
                         <span>{title.year}</span>
                         {title.runtime_min && (
                           <>
