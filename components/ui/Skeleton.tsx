@@ -73,3 +73,54 @@ export function SkeletonHeader() {
     </header>
   );
 }
+
+export function SkeletonSwipeCard() {
+  return (
+    <div className="w-full max-w-2xl mx-auto animate-fade-in">
+      <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        {/* Poster skeleton */}
+        <Skeleton variant="rectangular" className="w-full aspect-[2/3] rounded-none" />
+
+        {/* Content skeleton */}
+        <div className="p-6 sm:p-8 space-y-4">
+          {/* Title */}
+          <Skeleton variant="text" className="w-2/3 h-8" />
+
+          {/* Metadata row */}
+          <div className="flex items-center gap-3">
+            <Skeleton variant="text" className="w-16 h-5" />
+            <Skeleton variant="circular" className="w-1 h-1" />
+            <Skeleton variant="text" className="w-20 h-5" />
+          </div>
+
+          {/* Genre badges */}
+          <div className="flex flex-wrap gap-2">
+            <Skeleton variant="rectangular" className="w-20 h-8 rounded-full" />
+            <Skeleton variant="rectangular" className="w-24 h-8 rounded-full" />
+            <Skeleton variant="rectangular" className="w-28 h-8 rounded-full" />
+          </div>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            <Skeleton variant="rectangular" className="w-16 h-8 rounded-full" />
+            <Skeleton variant="rectangular" className="w-24 h-8 rounded-full" />
+          </div>
+
+          {/* Description */}
+          <div className="space-y-2">
+            <Skeleton variant="text" className="w-full h-4" />
+            <Skeleton variant="text" className="w-full h-4" />
+            <Skeleton variant="text" className="w-3/4 h-4" />
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex gap-3 pt-4">
+            <Skeleton variant="rectangular" className="flex-1 h-14 rounded-lg" />
+            <Skeleton variant="rectangular" className="flex-1 h-14 rounded-lg" />
+            <Skeleton variant="rectangular" className="flex-1 h-14 rounded-lg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

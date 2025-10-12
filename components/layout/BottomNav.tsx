@@ -56,14 +56,16 @@ export default function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 py-2 px-4 rounded-lg transition-all duration-200 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-inset ${
+                className={`flex flex-col items-center gap-1 py-2 px-4 rounded-lg transition-all duration-200 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-inset group ${
                   isActive
                     ? 'text-sky-600 bg-sky-50'
                     : 'text-gray-500 hover:text-sky-600 hover:bg-gray-50'
                 }`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                {item.icon}
+                <div className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}>
+                  {item.icon}
+                </div>
                 <span className="text-xs font-medium">{item.label}</span>
               </Link>
             );

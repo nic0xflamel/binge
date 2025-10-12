@@ -8,6 +8,7 @@ import type { SwipeWithProfile } from '@/lib/types/database';
 import { isNotNull } from '@/lib/types/database';
 import { useToast } from '@/lib/hooks/useToast';
 import { ToastContainer } from '@/components/ui/Toast';
+import { SkeletonSwipeCard } from '@/components/ui/Skeleton';
 import { logger } from '@/lib/utils/logger';
 import { RATE_LIMITS, DURATIONS } from '@/lib/constants';
 import { generateFeed, type FeedItem } from '@/lib/services/feedGenerator';
@@ -394,30 +395,7 @@ export default function SwipePage() {
     return (
       <div className={`${layouts.page} pb-24`}>
         <div className="max-w-2xl mx-auto px-4 pt-8 py-6">
-          <div className={`${components.card.solid} overflow-hidden animate-pulse`}>
-            {/* Skeleton Poster */}
-            <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 via-pink-100 to-sky-200 rounded-t-3xl"></div>
-            {/* Skeleton Info */}
-            <div className="p-6 space-y-4">
-              <div className="h-8 bg-gradient-to-r from-sky-100 to-pink-100 rounded-lg w-3/4"></div>
-              <div className="h-4 bg-sky-100 rounded w-1/2"></div>
-              <div className="flex gap-2">
-                <div className="h-6 bg-sky-100 rounded-full w-20"></div>
-                <div className="h-6 bg-sky-100 rounded-full w-20"></div>
-                <div className="h-6 bg-pink-100 rounded-full w-20"></div>
-              </div>
-              <div className="space-y-2">
-                <div className="h-4 bg-sky-50 rounded w-full"></div>
-                <div className="h-4 bg-sky-50 rounded w-5/6"></div>
-              </div>
-              <div className="flex gap-3 pt-2">
-                <div className="flex-1 h-12 bg-gradient-to-r from-sky-100 to-pink-100 rounded-lg"></div>
-                <div className="flex-1 h-12 bg-gradient-to-r from-pink-100 to-sky-100 rounded-lg"></div>
-                <div className="flex-1 h-12 bg-sky-100 rounded-lg"></div>
-              </div>
-            </div>
-          </div>
-          <div className="text-center mt-4 text-gray-800 font-medium">Loading your feed...</div>
+          <SkeletonSwipeCard />
         </div>
       </div>
     );
@@ -569,10 +547,10 @@ export default function SwipePage() {
 
             {/* Info */}
             <div className="px-4 sm:px-6 py-3 sm:py-4">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-gray-900 mb-2 leading-tight">
                 {currentTitle.name}
               </h2>
-              <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-gray-600 mb-2 sm:mb-3">
+              <div className="flex items-center gap-2 sm:gap-3 text-sm sm:text-base font-semibold text-gray-600 mb-3">
                 <span>{currentTitle.year}</span>
                 <span>•</span>
                 <span>{currentTitle.runtime_min} min</span>
@@ -703,14 +681,22 @@ export default function SwipePage() {
       {/* Match Celebration Modal */}
       {showMatchModal && matchResult && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center p-4 z-50 animate-fade-in"
+          className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 match-modal-backdrop"
           onClick={() => {
             setShowMatchModal(false);
             setMatchResult(null);
           }}
         >
+          {/* Confetti particles */}
+          <div className="confetti confetti-1 bg-sky-400" style={{ top: '20%', left: '10%' }} />
+          <div className="confetti confetti-2 bg-pink-400" style={{ top: '15%', left: '20%', animationDelay: '0.1s' }} />
+          <div className="confetti confetti-3 bg-sky-300" style={{ top: '25%', left: '80%', animationDelay: '0.2s' }} />
+          <div className="confetti confetti-1 bg-pink-300" style={{ top: '20%', right: '10%', animationDelay: '0.15s' }} />
+          <div className="confetti confetti-2 bg-sky-500" style={{ top: '30%', left: '50%', animationDelay: '0.05s' }} />
+          <div className="confetti confetti-3 bg-pink-500" style={{ top: '18%', right: '20%', animationDelay: '0.25s' }} />
+
           <div
-            className="bg-white rounded-3xl p-8 max-w-md w-full text-center animate-scale-in"
+            className="bg-white rounded-3xl p-8 max-w-md w-full text-center match-modal-content relative"
             onClick={e => e.stopPropagation()}
           >
             {/* Celebration */}
@@ -719,13 +705,13 @@ export default function SwipePage() {
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3">It&apos;s a Match!</h2>
-            <p className="text-lg text-gray-600 mb-6">
+            <h2 className="text-4xl font-bold text-gray-900 mb-3 match-modal-text">It&apos;s a Match!</h2>
+            <p className="text-lg text-gray-600 mb-6 match-modal-text">
               <span className="font-semibold text-sky-600">{matchResult.yesVotes}</span> out of <span className="font-semibold">{matchResult.totalMembers}</span> members loved this title
             </p>
 
             {/* Who voted yes */}
-            <div className="bg-gradient-to-br from-sky-50 to-pink-50 rounded-2xl p-5 mb-6 border border-sky-100">
+            <div className="bg-gradient-to-br from-sky-50 to-pink-50 rounded-2xl p-5 mb-6 border border-sky-100 match-modal-text">
               <h3 className="font-semibold text-gray-900 mb-3">Matched with:</h3>
               <div className="flex flex-wrap gap-2 justify-center">
                 {matchResult.yesVoters.map((name, i) => (
@@ -744,13 +730,13 @@ export default function SwipePage() {
                 setShowMatchModal(false);
                 setMatchResult(null);
               }}
-              className={`w-full ${components.button.primary} mb-3`}
+              className={`w-full ${components.button.primary} mb-3 match-modal-button`}
             >
               Keep Swiping
             </button>
             <button
               onClick={() => router.push('/matches')}
-              className={`w-full ${components.link.primary} font-semibold py-3`}
+              className={`w-full ${components.link.primary} font-semibold py-3 match-modal-button`}
             >
               View All Matches
             </button>

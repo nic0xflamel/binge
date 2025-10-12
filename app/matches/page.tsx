@@ -78,7 +78,7 @@ export default async function MatchesPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-20 md:pb-8">
         {typedMatches && typedMatches.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-            {typedMatches.map(match => {
+            {typedMatches.map((match, idx) => {
               const title = match.titles;
               if (!title) return null;
 
@@ -86,7 +86,7 @@ export default async function MatchesPage() {
                 <Link
                   key={match.id}
                   href={`/matches/${match.id}`}
-                  className="group"
+                  className={`group stagger-item stagger-item-${(idx % 12) + 1}`}
                 >
                   <div className={components.card.solid}>
                     {/* Poster */}

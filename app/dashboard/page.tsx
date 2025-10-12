@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { components, layouts } from '@/lib/design-system';
+import EnhancedEmptyState from '@/components/ui/EnhancedEmptyState';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -88,8 +89,11 @@ export default async function DashboardPage() {
         <div className={`${components.card.base} p-4 sm:p-6 md:p-8 animate-slide-up`}>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">My Likes</h2>
-              <p className="text-sm text-gray-600 mt-1">Movies and shows you want to watch</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 section-header-decorated pb-3">
+                My Likes
+                <span className="section-accent-dot"></span>
+              </h2>
+              <p className="text-sm text-gray-600 mt-4">Movies and shows you want to watch</p>
             </div>
             {typedLikes && typedLikes.length > 0 && (
               <div className={components.badge.primary}>
@@ -102,8 +106,7 @@ export default async function DashboardPage() {
               {typedLikes.map((like, idx) => (
                 <div
                   key={`${like.title_id}-${like.created_at}`}
-                  className="group"
-                  style={{ animationDelay: `${idx * 50}ms` }}
+                  className={`group stagger-item stagger-item-${(idx % 12) + 1}`}
                 >
                   <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-200 relative group-hover:scale-105">
                     {like.titles?.poster_url ? (
@@ -137,23 +140,11 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No likes yet</h3>
-              <p className="text-gray-600 mb-6 max-w-sm mx-auto">
-                Start swiping to build your personal watchlist of movies and shows you love!
-              </p>
-              <Link
-                href="/swipe"
-                className={`${components.button.primary} inline-block`}
-              >
-                Start Swiping
-              </Link>
-            </div>
+            <EnhancedEmptyState
+              type="likes"
+              actionHref="/swipe"
+              actionLabel="Start Swiping"
+            />
           )}
         </div>
 
@@ -161,8 +152,11 @@ export default async function DashboardPage() {
         <div className={`${components.card.base} p-4 sm:p-6 md:p-8 animate-slide-up`}>
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Group Matches</h2>
-              <p className="text-sm text-gray-600 mt-1">What everyone agreed on</p>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 section-header-decorated pb-3">
+                Group Matches
+                <span className="section-accent-dot"></span>
+              </h2>
+              <p className="text-sm text-gray-600 mt-4">What everyone agreed on</p>
             </div>
           </div>
           {typedMatches && typedMatches.length > 0 ? (
@@ -171,8 +165,7 @@ export default async function DashboardPage() {
                 <Link
                   key={match.id}
                   href={`/matches/${match.id}`}
-                  className="group"
-                  style={{ animationDelay: `${idx * 50}ms` }}
+                  className={`group stagger-item stagger-item-${(idx % 12) + 1}`}
                 >
                   <div className="aspect-[2/3] bg-gradient-to-br from-sky-100 to-pink-100 rounded-2xl overflow-hidden shadow-sm group-hover:shadow-xl transition-all duration-200 relative group-hover:scale-105">
                     {match.titles?.poster_url ? (
@@ -200,29 +193,20 @@ export default async function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="text-center py-12">
-              <div className="w-16 h-16 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">No matches yet</h3>
-              <p className="text-gray-600 mb-6 max-w-sm mx-auto">
-                When your group agrees on titles, they&apos;ll show up here. Get everyone swiping!
-              </p>
-              <Link
-                href="/swipe"
-                className={`${components.button.primary} inline-block`}
-              >
-                Start Swiping
-              </Link>
-            </div>
+            <EnhancedEmptyState
+              type="matches"
+              actionHref="/swipe"
+              actionLabel="Start Swiping"
+            />
           )}
         </div>
 
         {/* Quick Links */}
         <div className={`${components.card.base} p-4 sm:p-6 md:p-8`}>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Settings</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 section-header-decorated pb-3 mb-8">
+            Settings
+            <span className="section-accent-dot"></span>
+          </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             <Link
               href="/preferences"

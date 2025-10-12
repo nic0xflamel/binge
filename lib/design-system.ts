@@ -78,18 +78,22 @@ export const shadows = {
 
 // Typography
 export const typography = {
+  display: 'text-5xl font-black tracking-tight text-gray-900',
   heading: {
-    h1: 'text-4xl font-bold text-gray-900',
-    h2: 'text-3xl font-bold text-gray-900',
-    h3: 'text-2xl font-bold text-gray-900',
-    h4: 'text-xl font-bold text-gray-900',
+    h1: 'text-4xl font-bold tracking-tight text-gray-900',
+    h2: 'text-3xl font-bold tracking-tight text-gray-900',
+    h3: 'text-2xl font-semibold tracking-tight text-gray-900',
+    h4: 'text-xl font-semibold text-gray-900',
   },
+  subtitle: 'text-lg text-gray-600 font-medium',
   body: {
-    large: 'text-lg text-gray-800',
-    base: 'text-base text-gray-800',
+    large: 'text-lg text-gray-800 leading-relaxed',
+    base: 'text-base text-gray-800 leading-relaxed',
     small: 'text-sm text-gray-700',
     xs: 'text-xs text-gray-600',
   },
+  caption: 'text-sm text-gray-600',
+  overline: 'text-xs uppercase tracking-wider font-bold text-gray-500 mb-3',
 } as const;
 
 // Spacing (with safe area support)
@@ -106,25 +110,26 @@ export const spacing = {
 export const components = {
   // Card variants
   card: {
-    base: `bg-white/80 backdrop-blur-sm ${borderRadius.xl} ${shadows.md} border border-gray-100 hover:${shadows.lg} transition-all duration-200`,
-    solid: `bg-white ${borderRadius.xl} ${shadows.md} hover:${shadows.lg} transition-all duration-200`,
-    feature: `bg-white/80 backdrop-blur-sm ${borderRadius.xl} ${shadows.md} p-6 sm:p-8 hover:${shadows.xl} transition-all duration-200 group`,
+    base: `bg-white/80 backdrop-blur-sm ${borderRadius.xl} ${shadows.md} border border-gray-100 hover:${shadows.xl} hover:scale-[1.02] hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 ease-out`,
+    solid: `bg-white ${borderRadius.xl} ${shadows.md} hover:${shadows.xl} hover:scale-[1.02] hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 ease-out`,
+    feature: `bg-white/80 backdrop-blur-sm ${borderRadius.xl} ${shadows.md} p-6 sm:p-8 hover:${shadows.xl} hover:scale-[1.02] hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 ease-out group`,
+    interactive: `bg-white ${borderRadius.xl} ${shadows.md} hover:${shadows['2xl']} hover:scale-[1.02] hover:ring-2 hover:ring-sky-400/50 transition-all duration-300 ease-out cursor-pointer`,
   },
 
   // Button variants (all with min 44px touch targets)
   button: {
-    primary: `bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:${shadows.lg} hover:scale-105 active:scale-95 transform transition-all duration-200 ${shadows.md} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2`,
-    secondary: `bg-sky-100 text-sky-700 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-sky-200 hover:scale-105 active:scale-95 transform transition-all duration-200 border-2 border-sky-300 ${shadows.sm} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2`,
-    ghost: `bg-gray-200 text-gray-800 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-gray-300 hover:scale-105 active:scale-95 transform transition-all duration-200 border-2 border-gray-300 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`,
-    danger: `bg-red-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-red-700 hover:scale-105 active:scale-95 transform transition-all duration-200 ${shadows.md} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2`,
+    primary: `bg-gradient-to-r from-sky-600 to-pink-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} ${shadows.md} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 button-spring-hover button-glow-primary hover:brightness-110 active:scale-95 transform transition-all duration-150`,
+    secondary: `bg-sky-100 text-sky-700 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-sky-200 hover:brightness-105 border-2 border-sky-300 ${shadows.sm} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 button-spring-hover active:scale-95 transform transition-all duration-150`,
+    ghost: `bg-gray-200 text-gray-800 font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-gray-300 hover:brightness-105 border-2 border-gray-300 min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 button-spring-hover active:scale-95 transform transition-all duration-150`,
+    danger: `bg-red-600 text-white font-semibold py-3 px-6 ${borderRadius.lg} hover:bg-red-700 ${shadows.md} min-h-[44px] touch-manipulation focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 button-spring-hover active:scale-95 transform transition-transform duration-150`,
   },
 
   // Badge variants (consistent styling with borders)
   badge: {
-    primary: `text-sm font-semibold text-sky-700 bg-sky-100 px-3 py-1.5 ${borderRadius.full} border border-sky-200`,
-    secondary: `text-sm font-semibold text-pink-700 bg-pink-100 px-3 py-1.5 ${borderRadius.full} border border-pink-200`,
-    neutral: `text-sm font-medium text-gray-700 bg-gray-100 px-3 py-1.5 ${borderRadius.full} border border-gray-200`,
-    gradient: `text-sm font-semibold text-white ${gradients.primary} px-3 py-1.5 ${borderRadius.full} ${shadows.sm}`,
+    primary: `text-sm font-bold text-sky-800 bg-sky-100 px-3 py-1.5 ${borderRadius.full} border border-sky-300 shadow-sm`,
+    secondary: `text-sm font-bold text-pink-800 bg-pink-100 px-3 py-1.5 ${borderRadius.full} border border-pink-300 shadow-sm`,
+    neutral: `text-sm font-semibold text-gray-800 bg-gray-100 px-3 py-1.5 ${borderRadius.full} border border-gray-300 shadow-sm`,
+    gradient: `text-sm font-bold text-white ${gradients.primary} px-3 py-1.5 ${borderRadius.full} ${shadows.sm}`,
   },
 
   // Icon containers
