@@ -25,7 +25,8 @@
       "Bash(test:*)",
       "Bash(vercel ls:*)",
       "Bash(npx eslint:*)",
-      "Bash(npx cap sync:*)"
+      "Bash(npx cap sync:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []

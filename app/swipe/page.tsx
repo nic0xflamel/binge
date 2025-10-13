@@ -316,6 +316,9 @@ export default function SwipePage() {
     setSwiping(true);
     const currentItem = feedItems[currentIndex];
 
+    // Trigger haptic feedback immediately for better responsiveness
+    triggerHaptic(decision === 'yes' ? 'medium' : 'light');
+
     // If animated (from touch gesture), trigger exit animation
     if (animated) {
       setIsExiting(true);
@@ -326,52 +329,55 @@ export default function SwipePage() {
         x: decision === 'yes' ? exitDistance : -exitDistance,
         y: 0
       });
-    }
 
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { error } = await supabase
-        .from('swipes')
-        .insert({
-          group_id: groupId,
-          user_id: user.id,
-          title_id: currentItem.id,
-          decision,
-        });
-
-      if (error) throw error;
-
-      // Trigger haptic feedback
-      await triggerHaptic(decision === 'yes' ? 'medium' : 'light');
-
-      // Show immediate feedback
-      if (decision === 'yes') {
-        toast.success('Added to your likes! ❤️');
-      }
-
-      // Check if this swipe created a match (only if user voted yes and is in a group)
-      if (decision === 'yes' && groupId) {
-        await checkForMatch(currentItem.id);
-      }
-
-      // Move to next card
+      // Wait for animation to complete before moving to next card
       setTimeout(() => {
         setCurrentIndex(prev => prev + 1);
         setSwiping(false);
         setIsExiting(false);
         setDragOffset({ x: 0, y: 0 });
         setSwipeDirection(null);
-      }, animated ? 300 : DURATIONS.CARD_TRANSITION_MS);
-    } catch (error) {
-      logger.error('Error swiping', error, { titleId: currentItem.id, decision });
-      toast.error('Failed to save your swipe.');
+      }, 300);
+    } else {
+      // For button clicks, move immediately
+      setCurrentIndex(prev => prev + 1);
       setSwiping(false);
       setIsExiting(false);
       setDragOffset({ x: 0, y: 0 });
       setSwipeDirection(null);
     }
+
+    // Perform database operations asynchronously (don't block UI)
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { error } = await supabase
+          .from('swipes')
+          .insert({
+            group_id: groupId,
+            user_id: user.id,
+            title_id: currentItem.id,
+            decision,
+          });
+
+        if (error) throw error;
+
+        // Show feedback
+        if (decision === 'yes') {
+          toast.success('Added to your likes! ❤️');
+        }
+
+        // Check if this swipe created a match (only if user voted yes and is in a group)
+        if (decision === 'yes' && groupId) {
+          await checkForMatch(currentItem.id);
+        }
+      } catch (error) {
+        logger.error('Error swiping', error, { titleId: currentItem.id, decision });
+        toast.error('Failed to save your swipe.');
+      }
+    })();
   }, [swiping, currentIndex, feedItems, groupId, rateLimitCooldown, supabase, toast, checkForMatch]);
 
   const handleTouchEnd = useCallback(() => {
