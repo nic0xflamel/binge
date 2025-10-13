@@ -38,10 +38,10 @@ export default function EnhancedEmptyState({
         </div>
 
         <h3 className="text-2xl font-bold text-gray-900 mb-3">
-          Your Watchlist Feels Lonely
+          Your Watchlist Awaits! 🍿
         </h3>
         <p className="text-gray-600 mb-8 max-w-sm mx-auto leading-relaxed">
-          Start swiping to build your personal collection of movies and shows you will love!
+          Start swiping to discover movies and shows you&apos;ll absolutely love!
         </p>
         <Link
           href={actionHref}
@@ -98,10 +98,10 @@ export default function EnhancedEmptyState({
       </div>
 
       <h3 className="text-2xl font-bold text-gray-900 mb-3">
-        No Group Matches Yet
+        No Matches Yet—But Soon! 🎬
       </h3>
       <p className="text-gray-600 mb-8 max-w-sm mx-auto leading-relaxed">
-        When your group agrees on titles, they will appear here. Get everyone swiping to find your perfect movie night!
+        Once your crew agrees on something, it&apos;ll show up here. Time to start swiping!
       </p>
       <Link
         href={actionHref}

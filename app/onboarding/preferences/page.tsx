@@ -81,8 +81,8 @@ function PreferencesForm() {
     <div className="min-h-screen bg-gradient-to-br from-purple-500 to-pink-500 p-4 py-12">
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-2xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Set Your Preferences</h1>
-          <p className="text-gray-600">Tell us what you like to watch</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">What's Your Vibe?</h1>
+          <p className="text-gray-600">Help us find your perfect matches</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -188,7 +188,7 @@ function PreferencesForm() {
             fullWidth
             size="lg"
           >
-            Start Swiping
+            Let's Find Something!
           </Button>
 
           {services.length === 0 && (

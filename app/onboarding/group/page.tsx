@@ -87,8 +87,8 @@ export default function GroupSetupPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-500 to-pink-500 p-4">
         <Card variant="elevated" className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Join or Create a Group</h1>
-            <p className="text-gray-600">Watch together with friends</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Find Your Watch Crew</h1>
+            <p className="text-gray-600">Better together—match with friends!</p>
           </div>
 
           <div className="space-y-4">
@@ -117,7 +117,7 @@ export default function GroupSetupPage() {
 
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Create a Group</h1>
-            <p className="text-gray-600">Give your group a name</p>
+            <p className="text-gray-600">What should we call your crew?</p>
           </div>
 
           <form onSubmit={handleCreateGroup} className="space-y-6">

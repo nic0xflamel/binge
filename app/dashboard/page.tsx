@@ -64,7 +64,7 @@ export default async function DashboardPage() {
               </div>
               <h2 className="text-xl font-bold text-gray-900 mb-2">Start Swiping</h2>
               <p className="text-gray-700 text-sm leading-relaxed">
-                Discover your next favorite show or movie
+                Find your next binge-worthy obsession
               </p>
             </div>
           </Link>
@@ -77,9 +77,9 @@ export default async function DashboardPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-bold text-gray-900 mb-2">Your Matches</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-2">Group Picks</h2>
               <p className="text-gray-700 text-sm">
-                <span className="font-semibold text-pink-700">{typedMatches?.length || 0}</span> titles everyone loves
+                <span className="font-semibold text-pink-700">{typedMatches?.length || 0}</span> perfect matches for your crew
               </p>
             </div>
           </Link>
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-3xl font-bold tracking-tight text-gray-900 section-header-decorated pb-3">
-                My Likes
+                My Watchlist
                 <span className="section-accent-dot"></span>
               </h2>
               <p className="text-sm text-gray-600 mt-4">Movies and shows you want to watch</p>

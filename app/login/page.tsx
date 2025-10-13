@@ -58,7 +58,7 @@ export default function LoginPage() {
       <Card variant="elevated" className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 mb-2">Binge</h1>
-          <p className="text-gray-600">Find what to watch together</p>
+          <p className="text-gray-600">Swipe together, watch together ✨</p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

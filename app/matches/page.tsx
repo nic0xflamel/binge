@@ -141,9 +141,9 @@ export default async function MatchesPage() {
         ) : (
           <div className={`${components.card.solid} p-12 text-center`}>
             <div className="text-6xl mb-4">🎬</div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">No matches yet</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">No Matches Yet</h2>
             <p className="text-gray-600 mb-6">
-              Start swiping to find titles your group will love!
+              Get everyone swiping to discover what you&apos;ll watch next!
             </p>
             <Link
               href="/swipe"

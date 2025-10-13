@@ -366,7 +366,7 @@ export default function SwipePage() {
 
         // Show feedback
         if (decision === 'yes') {
-          toast.success('Added to your likes! ❤️');
+          toast.success('Saved! ✨');
         }
 
         // Check if this swipe created a match (only if user voted yes and is in a group)
@@ -416,9 +416,9 @@ export default function SwipePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">All Caught Up!</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">You're a Swiping Legend! 🎉</h1>
           <p className="text-gray-800 mb-8 leading-relaxed">
-            You&apos;ve swiped through all available titles. Check back soon for more recommendations!
+            You&apos;ve seen everything we&apos;ve got! Take a break or refresh for a fresh look.
           </p>
           <button
             onClick={() => {
@@ -463,9 +463,9 @@ export default function SwipePage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <div className="flex-1">
-                <p className="font-semibold mb-1">Swiping Solo</p>
+                <p className="font-semibold mb-1">Flying Solo? 🎬</p>
                 <p className="text-sm text-sky-100 mb-3">
-                  You&apos;re building your personal watchlist. Join a group to find matches with friends!
+                  You&apos;re curating your perfect watchlist! Ready to find matches with friends?
                 </p>
                 <button
                   onClick={() => router.push('/onboarding/group')}
@@ -711,14 +711,14 @@ export default function SwipePage() {
                 <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
               </svg>
             </div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-3 match-modal-text">It&apos;s a Match!</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-3 match-modal-text">It&apos;s a Match! 🎉</h2>
             <p className="text-lg text-gray-600 mb-6 match-modal-text">
-              <span className="font-semibold text-sky-600">{matchResult.yesVotes}</span> out of <span className="font-semibold">{matchResult.totalMembers}</span> members loved this title
+              <span className="font-semibold text-sky-600">{matchResult.yesVotes}</span> out of <span className="font-semibold">{matchResult.totalMembers}</span> people want to watch this!
             </p>
 
             {/* Who voted yes */}
             <div className="bg-gradient-to-br from-sky-50 to-pink-50 rounded-2xl p-5 mb-6 border border-sky-100 match-modal-text">
-              <h3 className="font-semibold text-gray-900 mb-3">Matched with:</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Watch crew assembled:</h3>
               <div className="flex flex-wrap gap-2 justify-center">
                 {matchResult.yesVoters.map((name, i) => (
                   <span

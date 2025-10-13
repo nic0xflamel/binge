@@ -191,7 +191,7 @@ export default async function MatchDetailPage({
               {/* Streaming Services */}
               {availability?.services && availability.services.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Watch on</h3>
+                  <h3 className="text-sm font-semibold text-gray-700 mb-2">Where to watch</h3>
                   <div className="flex flex-wrap gap-2">
                     {availability.services.map((service: string) => {
                       const template = linksMap.get(service);
@@ -265,8 +265,8 @@ export default async function MatchDetailPage({
         {/* Rating Section */}
         {!userRating && (
           <div className="mt-6 bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Rate this title</h2>
-            <p className="text-gray-600 mb-4">Have you watched it? Let your group know what you thought!</p>
+            <h2 className="text-xl font-bold text-gray-900 mb-4">Watched it?</h2>
+            <p className="text-gray-600 mb-4">Tell your crew what you thought!</p>
             <Link
               href={`/matches/${id}/rate`}
               className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold py-3 px-8 rounded-lg hover:shadow-lg transition-all"

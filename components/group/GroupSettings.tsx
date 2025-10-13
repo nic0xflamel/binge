@@ -211,8 +211,8 @@ export default function GroupSettings({ group, members, currentUserId }: GroupSe
               <p className="text-lg text-gray-900 capitalize">{group.match_threshold}</p>
               <p className="text-sm text-gray-600 mt-1">
                 {group.match_threshold === 'unanimous'
-                  ? 'Everyone must swipe yes to create a match'
-                  : 'Half or more must swipe yes to create a match'}
+                  ? 'Everyone must love it (no one gets left behind!)'
+                  : 'Half your crew or more needs to be on board'}
               </p>
             </div>
 
@@ -241,7 +241,7 @@ export default function GroupSettings({ group, members, currentUserId }: GroupSe
                 </Button>
               </div>
               <p className="text-sm text-gray-600 mt-1">
-                Share this link with friends to invite them to your group
+                Share this link to grow your watch crew!
               </p>
             </div>
           </div>
@@ -393,7 +393,7 @@ export default function GroupSettings({ group, members, currentUserId }: GroupSe
                 <div>
                   <div className="font-semibold text-gray-900">Majority</div>
                   <div className="text-sm text-gray-600">
-                    Half or more must swipe yes to create a match
+                    Half your crew or more needs to be on board
                   </div>
                 </div>
               </label>
@@ -409,7 +409,7 @@ export default function GroupSettings({ group, members, currentUserId }: GroupSe
                 <div>
                   <div className="font-semibold text-gray-900">Unanimous</div>
                   <div className="text-sm text-gray-600">
-                    Everyone must swipe yes to create a match
+                    Everyone must love it (no one gets left behind!)
                   </div>
                 </div>
               </label>
