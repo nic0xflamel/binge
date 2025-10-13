@@ -79,6 +79,23 @@ export default function SwipePage() {
     }
   }, [currentIndex, feedItems.length, userId, groupId, loadingMore]);
 
+  // Preload next 3 cards' images to prevent flash during transition
+  useEffect(() => {
+    if (feedItems.length > 0) {
+      // Preload next 3 cards for smooth transitions
+      for (let i = 1; i <= 3; i++) {
+        const nextIndex = currentIndex + i;
+        if (nextIndex < feedItems.length) {
+          const nextCard = feedItems[nextIndex];
+          if (nextCard?.poster_url) {
+            const img = new window.Image();
+            img.src = nextCard.poster_url;
+          }
+        }
+      }
+    }
+  }, [currentIndex, feedItems]);
+
   const initializeFeed = async (retry = false) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
